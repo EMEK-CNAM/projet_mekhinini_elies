@@ -1,13 +1,13 @@
 const express = require("express");
 const cors = require("cors");
 
-const app  = express ();
+const app = express();
 
 var corsOptions = {
   origin: "*",
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   headers: 'Content-Type, Authorization',
-  exposedHeaders:'Authorization'
+  exposedHeaders: 'Authorization'
 };
 
 app.use(cors(corsOptions));
@@ -36,7 +36,7 @@ db.sequelize.sync()
 require("./routes")(app);
 
 // set port, listen for requests
-const PORT =  443;
+const PORT = 40014;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

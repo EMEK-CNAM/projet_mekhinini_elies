@@ -1,17 +1,19 @@
 const { Sequelize } = require("sequelize");
-const { BDD } = require('../config');
-const sequelize = new Sequelize(`postgres://${BDD.user}:${BDD.password}@${BDD.host}/${BDD.bdname}`
-  , {
-    dialect: 'postgres',
-    protocol: 'postgres',
-    dialectOptions: {
-      ssl: true,
-      native: true
-    },
-    define: {
-      timestamps: false
-    }
-  });
+const { BDD } = require("../config");
+
+const normalizeJdbcToUri = (jdbc) => {
+  if (!jdbc) return "";
+  const trimmed = jdbc.trim();
+  if (!trimmed.startsWith("jdbc:")) return trimmed;
+  return trimmed.replace(/^jdbc:/, "");
+};
+
+const dbUrl = normalizeJdbcToUri(BDD.jdbc);
+
+const sequelize = new Sequelize(dbUrl, {
+  dialect: BDD.dialect || "mariadb",
+  define: { timestamps: false }
+});
 
 const db = {};
 
