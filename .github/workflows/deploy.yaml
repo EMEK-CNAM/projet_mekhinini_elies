@@ -1,7 +1,7 @@
 name: Deploy API to Development
 on:
   push:
-    branches: [prod]  
+    branches: [master]  
 
 jobs:
   deploy:
