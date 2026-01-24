@@ -8,6 +8,7 @@ import { withNgxsReduxDevtoolsPlugin } from '@ngxs/devtools-plugin';
 import { routes } from './app.routes';
 import { AuthState } from './store/auth.state';
 import { PollutionState } from './store/pollution.state';
+import { FavoritesState } from './store/favorites.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,9 +16,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withFetch()),
     provideStore(
-      [AuthState, PollutionState],
+      [AuthState, PollutionState, FavoritesState],
       withNgxsLoggerPlugin(),
-      withNgxsReduxDevtoolsPlugin()
-    )
-  ]
+      withNgxsReduxDevtoolsPlugin(),
+    ),
+  ],
 };

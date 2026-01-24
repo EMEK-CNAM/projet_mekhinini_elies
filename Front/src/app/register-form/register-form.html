@@ -1,70 +1,65 @@
-<form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)" novalidate>
-    <h2>Register</h2>
+<div class="register-container">
+  <div class="register-card">
+    <h1>Inscription</h1>
+    <p class="lead">Créez votre compte pour commencer</p>
 
-    <div>
-        <label for="firstName">First name</label>
-        <input id="firstName" name="firstName" type="text" required minlength="2" [(ngModel)]="model.firstName"
-            #firstName="ngModel" aria-describedby="firstNameError" />
-        <div id="firstNameError" *ngIf="firstName.invalid && firstName.touched">
-            <span *ngIf="firstName.errors?.required">First name is required.</span>
-            <span *ngIf="firstName.errors?.minlength">Must be at least 2 characters.</span>
-        </div>
-    </div>
+    <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="field" [class.error]="f['fullName'].touched && f['fullName'].invalid">
+        <label for="fullName">Nom complet</label>
+        <input id="fullName" formControlName="fullName" type="text" placeholder="Jean Dupont" />
+        <span class="help" *ngIf="f['fullName'].touched && f['fullName'].invalid">
+          Le nom complet est requis.
+        </span>
+      </div>
 
-    <div>
-        <label for="lastName">Last name</label>
-        <input id="lastName" name="lastName" type="text" required minlength="2" [(ngModel)]="model.lastName"
-            #lastName="ngModel" aria-describedby="lastNameError" />
-        <div id="lastNameError" *ngIf="lastName.invalid && lastName.touched">
-            <span *ngIf="lastName.errors?.required">Last name is required.</span>
-            <span *ngIf="lastName.errors?.minlength">Must be at least 2 characters.</span>
-        </div>
-    </div>
-
-    <div>
+      <div class="field" [class.error]="f['email'].touched && f['email'].invalid">
         <label for="email">Email</label>
-        <input id="email" name="email" type="email" required [(ngModel)]="model.email" #email="ngModel"
-            aria-describedby="emailError" />
-        <div id="emailError" *ngIf="email.invalid && email.touched">
-            <span *ngIf="email.errors?.required">Email is required.</span>
-            <span *ngIf="email.errors?.email">Enter a valid email address.</span>
-        </div>
-    </div>
+        <input id="email" formControlName="email" type="email" placeholder="vous@example.com" />
+        <span class="help" *ngIf="f['email'].touched && f['email'].invalid">
+          Un email valide est requis.
+        </span>
+      </div>
 
-    <div>
-        <label for="password">Password</label>
-        <input id="password" name="password" type="password" required minlength="8" [(ngModel)]="model.password"
-            #password="ngModel" aria-describedby="passwordError" />
-        <div id="passwordError" *ngIf="password.invalid && password.touched">
-            <span *ngIf="password.errors?.required">Password is required.</span>
-            <span *ngIf="password.errors?.minlength">Minimum 8 characters.</span>
-        </div>
-    </div>
+      <div class="field" [class.error]="f['password'].touched && f['password'].invalid">
+        <label for="password">Mot de passe</label>
+        <input id="password" formControlName="password" type="password" placeholder="••••••••" />
+        <span class="help" *ngIf="f['password'].touched && f['password'].invalid">
+          Le mot de passe doit contenir au moins 6 caractères.
+        </span>
+      </div>
 
-    <div>
-        <label for="confirmPassword">Confirm password</label>
-        <input id="confirmPassword" name="confirmPassword" type="password" required [(ngModel)]="model.confirmPassword"
-            #confirm="ngModel" aria-describedby="confirmError" />
-        <div id="confirmError" *ngIf="(confirm.touched || registerForm.submitted) && password.value !== confirm.value">
-            <span>Passwords do not match.</span>
-        </div>
-    </div>
+      <div
+        class="field"
+        [class.error]="f['confirmPassword'].touched && registerForm.errors?.['passwordMismatch']"
+      >
+        <label for="confirmPassword">Confirmer le mot de passe</label>
+        <input
+          id="confirmPassword"
+          formControlName="confirmPassword"
+          type="password"
+          placeholder="••••••••"
+        />
+        <span
+          class="help"
+          *ngIf="f['confirmPassword'].touched && registerForm.errors?.['passwordMismatch']"
+        >
+          Les mots de passe ne correspondent pas.
+        </span>
+      </div>
 
-    <div>
-        <label>
-            <input type="checkbox" name="acceptTerms" #acceptTerms required [(ngModel)]="model.acceptTerms" />
-            I accept the terms and conditions
-        </label>
-        <div *ngIf="registerForm.submitted && !model.acceptTerms">
-            <span>You must accept the terms.</span>
-        </div>
-    </div>
+      <div class="actions">
+        <button type="submit" class="btn-primary" [disabled]="registerForm.invalid">
+          S'inscrire
+        </button>
+        <button type="button" class="btn-link" (click)="goToLogin()">Retour à la connexion</button>
+      </div>
+    </form>
 
-    <button type="submit" [disabled]="
-            registerForm.invalid ||
-            password.value !== confirm.value ||
-            !acceptTerms.checked
-        ">
-        Register
-    </button>
-</form>
+    <div class="divider"></div>
+
+    <div class="extra">
+      Vous avez déjà un compte ?
+      <a class="btn-link" (click)="goToLogin()" style="cursor: pointer">Connectez-vous</a>
+    </div>
+  </div>
+</div>

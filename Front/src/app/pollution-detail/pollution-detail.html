@@ -1,26 +1,34 @@
-<div *ngIf="loading" class="loading">
-    Chargement en cours...
-</div>
+<div *ngIf="loading" class="loading">Chargement en cours...</div>
 
 <div *ngIf="errorMsg && !loading" class="error">
-    {{ errorMsg }}
+  {{ errorMsg }}
 </div>
 
 <div *ngIf="pollution && !loading && !errorMsg" class="detail">
+  <div style="display: flex; justify-content: space-between; align-items: center">
     <h2>{{ pollution.titre }}</h2>
+    <button
+      class="favorite-btn"
+      [class.is-favorite]="isFavorite"
+      (click)="toggleFavorite()"
+      title="{{ isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris' }}"
+    >
+      {{ isFavorite ? '❤️' : '🤍' }}
+    </button>
+  </div>
 
-    <p><strong>Type :</strong> {{ pollution.type_pollution }}</p>
-    <p><strong>Description :</strong> {{ pollution.description }}</p>
-    <p><strong>Date :</strong> {{ pollution.date_observation }}</p>
-    <p><strong>Lieu :</strong> {{ pollution.lieu }}</p>
-    <p><strong>Latitude :</strong> {{ pollution.latitude }}</p>
-    <p><strong>Longitude :</strong> {{ pollution.longitude }}</p>
+  <p><strong>Type :</strong> {{ pollution.type_pollution }}</p>
+  <p><strong>Description :</strong> {{ pollution.description }}</p>
+  <p><strong>Date :</strong> {{ pollution.date_observation }}</p>
+  <p><strong>Lieu :</strong> {{ pollution.lieu }}</p>
+  <p><strong>Latitude :</strong> {{ pollution.latitude }}</p>
+  <p><strong>Longitude :</strong> {{ pollution.longitude }}</p>
 
-    <div *ngIf="pollution.photo_url">
-        <h3>📸 photo_url :</h3>
-        <img [src]="pollution.photo_url" alt="photo_url de la pollution" />
-    </div>
+  <div *ngIf="pollution.photo_url">
+    <h3>📸 photo_url :</h3>
+    <img [src]="pollution.photo_url" alt="photo_url de la pollution" />
+  </div>
 
-    <button (click)="back()">⬅ Retour</button>
-    <button (click)="edit()">✏️ Éditer</button>
+  <button (click)="back()">⬅ Retour</button>
+  <button (click)="edit()">✏️ Éditer</button>
 </div>

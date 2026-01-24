@@ -9,33 +9,31 @@ import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class PollutionService {
-    private apiUrl: string = `https://templateweb-latest-nzzn.onrender.com`;
+  private apiUrl: string = `http://devilmans.debirumans.fr:40014`;
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
+  getAll(): Observable<Pollution[]> {
+    return this.http.get<Pollution[]>(this.apiUrl + '/api/pollution');
+  }
 
+  getById(id: string | number): Observable<Pollution> {
+    return this.http.get<Pollution>(`${this.apiUrl}/api/pollution/${id}`);
+  }
 
-    getAll(): Observable<Pollution[]> {
-        return this.http.get<Pollution[]>(this.apiUrl + '/api/pollution');
-    }
+  create(p: Pollution): Observable<Pollution> {
+    const payload = { ...p };
+    delete payload.id;
+    return this.http.post<Pollution>(this.apiUrl + '/api/pollution', payload);
+  }
 
-    getById(id: string | number): Observable<Pollution> {
-        return this.http.get<Pollution>(`${this.apiUrl}/api/pollution/${id}`);
-    }
+  update(id: string | number, p: Pollution): Observable<Pollution> {
+    const payload = { ...p };
+    delete payload.id;
+    return this.http.put<Pollution>(`${this.apiUrl}/api/pollution/${id}`, payload);
+  }
 
-    create(p: Pollution): Observable<Pollution> {
-        const payload = { ...p };
-        delete payload.id;
-        return this.http.post<Pollution>(this.apiUrl + '/api/pollution', payload);
-    }
-
-    update(id: string | number, p: Pollution): Observable<Pollution> {
-        const payload = { ...p };
-        delete payload.id;
-        return this.http.put<Pollution>(`${this.apiUrl}/api/pollution/${id}`, payload);
-    }
-
-    delete(id: string | number): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/api/pollution/${id}`);
-    }
+  delete(id: string | number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/api/pollution/${id}`);
+  }
 }

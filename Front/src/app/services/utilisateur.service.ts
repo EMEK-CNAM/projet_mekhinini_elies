@@ -5,30 +5,34 @@ import { Utilisateur } from '../models/utilisateur';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class UtilisateurService {
-    private apiUrl = `https://templateweb-latest-nzzn.onrender.com`;
+  private apiUrl = `http://devilmans.debirumans.fr:40014`;
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-    getAll(): Observable<Utilisateur[]> {
-        return this.http.get<Utilisateur[]>(`${this.apiUrl}/api/utilisateur`);
-    }
+  login(credentials: { email: string; password: string }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/api/utilisateur/login`, credentials);
+  }
 
-    getById(id: string): Observable<Utilisateur> {
-        return this.http.get<Utilisateur>(`${this.apiUrl}/api/utilisateur/${id}`);
-    }
+  getAll(): Observable<Utilisateur[]> {
+    return this.http.get<Utilisateur[]>(`${this.apiUrl}/api/utilisateur`);
+  }
 
-    create(utilisateur: Utilisateur): Observable<Utilisateur> {
-        return this.http.post<Utilisateur>(`${this.apiUrl}/api/utilisateur`, utilisateur);
-    }
+  getById(id: string): Observable<Utilisateur> {
+    return this.http.get<Utilisateur>(`${this.apiUrl}/api/utilisateur/profile/${id}`);
+  }
 
-    update(id: string, utilisateur: Utilisateur): Observable<Utilisateur> {
-        return this.http.put<Utilisateur>(`${this.apiUrl}/api/utilisateur/${id}`, utilisateur);
-    }
+  create(utilisateur: Utilisateur): Observable<Utilisateur> {
+    return this.http.post<Utilisateur>(`${this.apiUrl}/api/utilisateur/register`, utilisateur);
+  }
 
-    delete(id: string): Observable<void> {
-        return this.http.delete<void>(`${this.apiUrl}/api/utilisateur/${id}`);
-    }
+  update(id: string, utilisateur: Utilisateur): Observable<Utilisateur> {
+    return this.http.put<Utilisateur>(`${this.apiUrl}/api/utilisateur/${id}`, utilisateur);
+  }
+
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/api/utilisateur/${id}`);
+  }
 }

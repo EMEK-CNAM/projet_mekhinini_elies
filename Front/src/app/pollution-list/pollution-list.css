@@ -1,245 +1,245 @@
 .pollution-list-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #e0e0e0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #e0e0e0;
 }
 
 .header h2 {
-    margin: 0;
-    color: #2c3e50;
-    font-size: 28px;
+  margin: 0;
+  color: #2c3e50;
+  font-size: 28px;
 }
 
 .btn-primary {
-    padding: 12px 24px;
-    background: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(76, 175, 80, 0.3);
+  padding: 12px 24px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(76, 175, 80, 0.3);
 }
 
 .btn-primary:hover {
-    background: #45a049;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.4);
+  background: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(76, 175, 80, 0.4);
 }
 
 .pollution-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 25px;
 }
 
 .pollution-card {
-    background: white;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    border-left: 4px solid #4CAF50;
+  position: relative;
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border-left: 4px solid #4caf50;
 }
 
 .pollution-card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    transform: translateY(-3px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-3px);
 }
 
 .pollution-card h3 {
-    margin: 0 0 15px 0;
-    color: #2c3e50;
-    font-size: 20px;
-    font-weight: 600;
+  margin: 0 0 15px 0;
+  color: #2c3e50;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 .pollution-card p {
-    margin: 8px 0;
-    color: #555;
-    font-size: 14px;
-    line-height: 1.5;
+  margin: 8px 0;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .pollution-card p strong {
-    color: #333;
-    font-weight: 600;
+  color: #333;
+  font-weight: 600;
 }
 
 .description {
-    margin: 15px 0;
-    padding: 10px;
-    background: #f8f9fa;
-    border-radius: 4px;
-    color: #666;
-    font-size: 13px;
-    line-height: 1.6;
-    max-height: 60px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  margin: 15px 0;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.6;
+  max-height: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .pollution-card button {
-    margin-top: 15px;
-    margin-right: 10px;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  margin-top: 15px;
+  margin-right: 10px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .btn-detail {
-    background: #2196F3;
-    color: white;
+  background: #2196f3;
+  color: white;
 }
 
 .btn-detail:hover {
-    background: #0b7dda;
-    transform: translateY(-1px);
+  background: #0b7dda;
+  transform: translateY(-1px);
 }
 
 .btn-delete {
-    background: #f44336;
-    color: white;
+  background: #f44336;
+  color: white;
 }
 
 .btn-delete:hover {
-    background: #da190b;
-    transform: translateY(-1px);
+  background: #da190b;
+  transform: translateY(-1px);
 }
 
 .no-data {
-    text-align: center;
-    padding: 60px 20px;
-    color: #999;
-    font-size: 18px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  padding: 60px 20px;
+  color: #999;
+  font-size: 18px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 /* Styles pour les filtres et la recherche */
 .search-box {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .search-input {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: all 0.3s;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
 }
 
 .search-input:focus {
-    outline: none;
-    border-color: #4CAF50;
-    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+  outline: none;
+  border-color: #4caf50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
 }
 
 .filter-box {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .filter-box label {
-    font-weight: 600;
-    color: #555;
+  font-weight: 600;
+  color: #555;
 }
 
 .filter-box select {
-    padding: 0.75rem 1rem;
-    border: 2px solid #e0e0e0;
-    border-radius: 8px;
-    font-size: 1rem;
-    background: white;
-    cursor: pointer;
-    transition: all 0.3s;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
 .filter-box select:focus {
-    outline: none;
-    border-color: #4CAF50;
+  outline: none;
+  border-color: #4caf50;
 }
 
 .type-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    background: #4CAF50;
-    color: white;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: #4caf50;
+  color: white;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
 
 .loading {
-    text-align: center;
-    padding: 2rem;
-    font-size: 1.2rem;
-    color: #666;
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.2rem;
+  color: #666;
 }
 
 .favorite-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: transparent;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: transform 0.2s;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: transform 0.2s;
 }
 
 .favorite-btn:hover {
-    transform: scale(1.2);
+  transform: scale(1.2);
 }
 
 .favorite-btn.is-favorite {
-    animation: heartbeat 0.3s;
+  animation: heartbeat 0.3s;
 }
 
 @keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
 
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.3);
-    }
+  50% {
+    transform: scale(1.3);
+  }
 }
 
 @media (max-width: 768px) {
-    .pollution-grid {
-        grid-template-columns: 1fr;
-    }
+  .pollution-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .header {
-        flex-direction: column;
-        gap: 15px;
-        align-items: flex-start;
-    }
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
 
-    .btn-primary {
-        width: 100%;
-    }
+  .btn-primary {
+    width: 100%;
+  }
 }
