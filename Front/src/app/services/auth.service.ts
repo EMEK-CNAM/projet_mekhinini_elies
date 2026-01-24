@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface AuthResponse {
   token: string;
+  refreshToken: string;
   user: {
     id: string | number;
     nom: string;
@@ -25,6 +25,11 @@ export interface RegisterData {
   password: string;
 }
 
+export interface RefreshTokenResponse {
+  token: string;
+  refreshToken: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -33,110 +38,52 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  /**
-   * Authentifie un utilisateur
-   */
-  login(credentials: LoginCredentials): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
-      tap((response) => {
-        // L'API retourne directement l'utilisateur, pas un objet avec token
-        const authData = {
-          token: 'mock-jwt-token',
-          user: response,
-        };
-        this.storeAuthData(authData);
-      }),
-      catchError((error) => {
-        console.error('Login error:', error);
-        throw error;
-      }),
-    );
+  login(credentials: LoginCredentials): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials);
+  }
+
+  register(data: RegisterData): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, data);
+  }
+
+  refreshToken(refreshToken: string): Observable<RefreshTokenResponse> {
+    return this.http.post<RefreshTokenResponse>(`${this.apiUrl}/refresh`, { refreshToken });
   }
 
   /**
-   * Inscrit un nouvel utilisateur
+   * Décode le payload d'un JWT
    */
-  register(data: RegisterData): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/register`, data).pipe(
-      tap((response) => {
-        // L'API retourne directement l'utilisateur
-        const authData = {
-          token: 'mock-jwt-token',
-          user: response,
-        };
-        this.storeAuthData(authData);
-      }),
-      catchError((error) => {
-        console.error('Register error:', error);
-        throw error;
-      }),
-    );
-  }
-
-  /**
-   * Déconnecte l'utilisateur
-   */
-  logout(): void {
-    localStorage.removeItem('app:token');
-    localStorage.removeItem('app:user');
-    localStorage.removeItem('app:isLoggedIn');
-    localStorage.removeItem('app:username');
-  }
-
-  /**
-   * Vérifie si l'utilisateur est authentifié
-   */
-  isAuthenticated(): boolean {
-    const token = this.getToken();
-    return !!token && !this.isTokenExpired(token);
-  }
-
-  /**
-   * Récupère le token JWT
-   */
-  getToken(): string | null {
-    return localStorage.getItem('app:token');
-  }
-
-  /**
-   * Récupère les informations de l'utilisateur connecté
-   */
-  getCurrentUser(): any | null {
-    const userStr = localStorage.getItem('app:user');
-    return userStr ? JSON.parse(userStr) : null;
-  }
-
-  /**
-   * Stocke les données d'authentification
-   */
-  private storeAuthData(response: AuthResponse): void {
-    localStorage.setItem('app:token', response.token);
-    localStorage.setItem('app:user', JSON.stringify(response.user));
-    localStorage.setItem('app:isLoggedIn', 'true');
-    localStorage.setItem('app:username', response.user.nom);
-  }
-
-  /**
-   * Vérifie si le token JWT est expiré
-   */
-  private isTokenExpired(token: string): boolean {
+  decodeToken(token: string): any {
     try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const expiry = payload.exp;
-      return expiry ? Math.floor(new Date().getTime() / 1000) >= expiry : false;
+      const payload = token.split('.')[1];
+      return JSON.parse(atob(payload));
     } catch (e) {
-      return false;
+      return null;
     }
   }
 
   /**
-   * Crée les headers avec le token JWT
+   * Vérifie si un token est expiré
    */
-  getAuthHeaders(): HttpHeaders {
-    const token = this.getToken();
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      Authorization: token ? `Bearer ${token}` : '',
-    });
+  isTokenExpired(token: string): boolean {
+    const decoded = this.decodeToken(token);
+    if (!decoded || !decoded.exp) {
+      return true;
+    }
+    const expirationDate = new Date(decoded.exp * 1000);
+    return expirationDate < new Date();
+  }
+
+  /**
+   * Vérifie si le token expire bientôt (dans moins de 5 minutes)
+   */
+  shouldRefreshToken(token: string): boolean {
+    const decoded = this.decodeToken(token);
+    if (!decoded || !decoded.exp) {
+      return true;
+    }
+    const expirationDate = new Date(decoded.exp * 1000);
+    const fiveMinutesFromNow = new Date(Date.now() + 5 * 60 * 1000);
+    return expirationDate < fiveMinutesFromNow;
   }
 }

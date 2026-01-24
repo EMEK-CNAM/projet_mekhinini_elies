@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import { tap } from 'rxjs/operators';
-import { UtilisateurService } from '../services/utilisateur.service';
+import { tap, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 // Actions
 export class Login {
@@ -21,13 +22,14 @@ export class Logout {
   static readonly type = '[Auth] Logout';
 }
 
-export class CheckAuth {
-  static readonly type = '[Auth] Check Auth';
+export class RefreshToken {
+  static readonly type = '[Auth] Refresh Token';
 }
 
 // State Model
 export interface AuthStateModel {
   token: string | null;
+  refreshToken: string | null;
   user: any | null;
   isAuthenticated: boolean;
 }
@@ -36,17 +38,23 @@ export interface AuthStateModel {
   name: 'auth',
   defaults: {
     token: null,
+    refreshToken: null,
     user: null,
     isAuthenticated: false,
   },
 })
 @Injectable()
 export class AuthState {
-  constructor(private utilisateurService: UtilisateurService) {}
+  constructor(private authService: AuthService) {}
 
   @Selector()
   static token(state: AuthStateModel): string | null {
     return state.token;
+  }
+
+  @Selector()
+  static refreshToken(state: AuthStateModel): string | null {
+    return state.refreshToken;
   }
 
   @Selector()
@@ -61,44 +69,41 @@ export class AuthState {
 
   @Action(Login)
   login(ctx: StateContext<AuthStateModel>, action: Login) {
-    const credentials = {
-      email: action.email,
-      password: action.password,
-    };
-
-    return this.utilisateurService.login(credentials).pipe(
-      tap((user) => {
-        ctx.patchState({
-          token: 'mock-jwt-token',
-          user: user,
-          isAuthenticated: true,
-        });
-
-        // Sauvegarder dans localStorage
-        const username = user.email ? user.email.split('@')[0] : user.nom;
-        localStorage.setItem('app:token', 'mock-jwt-token');
-        localStorage.setItem('app:user', JSON.stringify(user));
-        localStorage.setItem('app:isLoggedIn', 'true');
-        localStorage.setItem('app:username', username);
-      }),
-    );
+    return this.authService
+      .login({
+        email: action.email,
+        password: action.password,
+      })
+      .pipe(
+        tap((response) => {
+          ctx.patchState({
+            token: response.token,
+            refreshToken: response.refreshToken,
+            user: response.user,
+            isAuthenticated: true,
+          });
+        }),
+        catchError((error) => {
+          console.error('Login error:', error);
+          return throwError(() => error);
+        }),
+      );
   }
 
   @Action(Register)
   register(ctx: StateContext<AuthStateModel>, action: Register) {
-    return this.utilisateurService.create(action.payload as any).pipe(
-      tap((user) => {
-        // Après inscription, on connecte automatiquement l'utilisateur
+    return this.authService.register(action.payload).pipe(
+      tap((response) => {
         ctx.patchState({
-          user: user,
+          token: response.token,
+          refreshToken: response.refreshToken,
+          user: response.user,
           isAuthenticated: true,
-          token: 'mock-jwt-token',
         });
-
-        localStorage.setItem('app:token', 'mock-jwt-token');
-        localStorage.setItem('app:user', JSON.stringify(user));
-        localStorage.setItem('app:isLoggedIn', 'true');
-        localStorage.setItem('app:username', user.nom);
+      }),
+      catchError((error) => {
+        console.error('Register error:', error);
+        return throwError(() => error);
       }),
     );
   }
@@ -107,27 +112,30 @@ export class AuthState {
   logout(ctx: StateContext<AuthStateModel>) {
     ctx.setState({
       token: null,
+      refreshToken: null,
       user: null,
       isAuthenticated: false,
     });
-
-    localStorage.removeItem('app:token');
-    localStorage.removeItem('app:user');
-    localStorage.removeItem('app:isLoggedIn');
-    localStorage.removeItem('app:username');
   }
 
-  @Action(CheckAuth)
-  checkAuth(ctx: StateContext<AuthStateModel>) {
-    const token = localStorage.getItem('app:token');
-    const userStr = localStorage.getItem('app:user');
-
-    if (token && userStr) {
-      ctx.patchState({
-        token: token,
-        user: JSON.parse(userStr),
-        isAuthenticated: true,
-      });
+  @Action(RefreshToken)
+  refreshToken(ctx: StateContext<AuthStateModel>) {
+    const state = ctx.getState();
+    if (!state.refreshToken) {
+      return throwError(() => new Error('No refresh token available'));
     }
+
+    return this.authService.refreshToken(state.refreshToken).pipe(
+      tap((response) => {
+        ctx.patchState({
+          token: response.token,
+          refreshToken: response.refreshToken,
+        });
+      }),
+      catchError((error) => {
+        ctx.dispatch(new Logout());
+        return throwError(() => error);
+      }),
+    );
   }
 }

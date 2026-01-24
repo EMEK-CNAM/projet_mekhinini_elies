@@ -6,16 +6,17 @@ import { PollutionDetail } from './pollution-detail/pollution-detail';
 import { PollutionForm } from './pollution-form/pollution-form';
 import { UserList } from './user-list/user-list';
 import { Favorites } from './favorites/favorites';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-    { path: 'login', component: LoginFormComponent },
-    { path: 'register', component: RegisterFormComponent },
-    { path: 'pollutions', component: PollutionList },
-    { path: 'pollutions/new', component: PollutionForm },
-    { path: 'pollutions/:id/edit', component: PollutionForm },
-    { path: 'pollutions/:id', component: PollutionDetail },
-    { path: 'users', component: UserList },
-    { path: 'favorites', component: Favorites },
-    { path: '', redirectTo: '/pollutions', pathMatch: 'full' },
-    { path: '**', redirectTo: '/pollutions' }
+  { path: 'login', component: LoginFormComponent },
+  { path: 'register', component: RegisterFormComponent },
+  { path: 'pollutions', component: PollutionList, canActivate: [authGuard] },
+  { path: 'pollutions/new', component: PollutionForm, canActivate: [authGuard] },
+  { path: 'pollutions/:id/edit', component: PollutionForm, canActivate: [authGuard] },
+  { path: 'pollutions/:id', component: PollutionDetail, canActivate: [authGuard] },
+  { path: 'users', component: UserList, canActivate: [authGuard] },
+  { path: 'favorites', component: Favorites, canActivate: [authGuard] },
+  { path: '', redirectTo: '/pollutions', pathMatch: 'full' },
+  { path: '**', redirectTo: '/pollutions' },
 ];
