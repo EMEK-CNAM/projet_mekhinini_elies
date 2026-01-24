@@ -1,0 +1,26 @@
+<div *ngIf="loading" class="loading">
+    Chargement en cours...
+</div>
+
+<div *ngIf="errorMsg && !loading" class="error">
+    {{ errorMsg }}
+</div>
+
+<div *ngIf="pollution && !loading && !errorMsg" class="detail">
+    <h2>{{ pollution.titre }}</h2>
+
+    <p><strong>Type :</strong> {{ pollution.type_pollution }}</p>
+    <p><strong>Description :</strong> {{ pollution.description }}</p>
+    <p><strong>Date :</strong> {{ pollution.date_observation }}</p>
+    <p><strong>Lieu :</strong> {{ pollution.lieu }}</p>
+    <p><strong>Latitude :</strong> {{ pollution.latitude }}</p>
+    <p><strong>Longitude :</strong> {{ pollution.longitude }}</p>
+
+    <div *ngIf="pollution.photo_url">
+        <h3>📸 photo_url :</h3>
+        <img [src]="pollution.photo_url" alt="photo_url de la pollution" />
+    </div>
+
+    <button (click)="back()">⬅ Retour</button>
+    <button (click)="edit()">✏️ Éditer</button>
+</div>

@@ -1,0 +1,184 @@
+/* register-form.css
+    Styles for a compact, responsive registration form component.
+    Scoped to .register-form to avoid global leakage.
+*/
+
+.register-form {
+    box-sizing: border-box;
+    max-width: 760px;
+    margin: 24px auto;
+    padding: 20px;
+    background: linear-gradient(180deg, #ffffff 0%, #fbfbfd 100%);
+    border: 1px solid rgba(16, 24, 40, 0.06);
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(16, 24, 40, 0.06);
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    color: #0f172a;
+}
+
+/* Heading */
+.register-form h2 {
+    margin: 0 0 12px 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+/* Grid for form controls */
+.register-form .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 14px;
+    margin-top: 12px;
+}
+
+/* Full-width rows (e.g., email, password confirm, submit) */
+.register-form .full {
+    grid-column: 1 / -1;
+}
+
+/* Label & control */
+.register-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.875rem;
+    color: #334155;
+}
+
+.register-form input[type="text"],
+.register-form input[type="email"],
+.register-form input[type="password"],
+.register-form input[type="tel"],
+.register-form select,
+.register-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 0.95rem;
+    color: #0f172a;
+    background: #fff;
+    border: 1px solid #e6e9ef;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color .16s ease, box-shadow .16s ease, transform .08s ease;
+    box-shadow: none;
+    box-sizing: border-box;
+}
+
+/* Focus & valid state */
+.register-form input:focus,
+.register-form select:focus,
+.register-form textarea:focus {
+    border-color: #6366f1;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.12);
+    transform: translateY(-1px);
+}
+
+/* Small helper / error text */
+.register-form .hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 0.80rem;
+    color: #6b7280;
+}
+
+.register-form .error {
+    color: #dc2626;
+    font-size: 0.80rem;
+    margin-top: 6px;
+}
+
+/* Terms and checkbox row */
+.register-form .terms {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: #374151;
+}
+
+/* Submit button */
+.register-form .submit-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 14px;
+    background: linear-gradient(90deg, #4f46e5, #6366f1);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform .12s ease, box-shadow .12s ease, opacity .12s ease;
+    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.16);
+}
+
+/* Hover & active */
+.register-form .submit-btn:hover {
+    transform: translateY(-2px);
+}
+
+.register-form .submit-btn:active {
+    transform: translateY(0);
+}
+
+/* Disabled */
+.register-form .submit-btn[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Small auxiliary link row */
+.register-form .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    font-size: 0.9rem;
+}
+
+/* Responsive: single column on small screens */
+@media (max-width: 640px) {
+    .register-form {
+        padding: 16px;
+    }
+
+    .register-form .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .register-form {
+        background: linear-gradient(180deg, #0b1220 0%, #071028 100%);
+        color: #e6eef8;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 6px 20px rgba(2, 6, 23, 0.72);
+    }
+
+    .register-form label {
+        color: #cbd5e1;
+    }
+
+    .register-form input,
+    .register-form select,
+    .register-form textarea {
+        background: #071029;
+        color: #e6eef8;
+        border: 1px solid rgba(148, 163, 184, 0.08);
+    }
+
+    .register-form .hint {
+        color: #9ca3af;
+    }
+
+    .register-form .submit-btn {
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.12);
+    }
+}

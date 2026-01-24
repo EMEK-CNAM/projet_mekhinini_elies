@@ -1,0 +1,28 @@
+<div class="favorites-container">
+    <div class="header">
+        <h2>Mes Favoris</h2>
+        <button (click)="backToList()" class="btn-primary">Retour à la liste</button>
+    </div>
+
+    <div *ngIf="loading" class="loading">Chargement des favoris...</div>
+
+    <div *ngIf="error && !loading" class="error">{{ error }}</div>
+
+    <div class="pollution-grid" *ngIf="favoritePollutions.length > 0 && !loading; else noFavorites">
+        <div class="pollution-card" *ngFor="let pollution of favoritePollutions">
+            <h3>{{ pollution.titre }}</h3>
+            <p><strong>Lieu:</strong> {{ pollution.lieu }}</p>
+            <p><strong>Date:</strong> {{ pollution.date_observation | date:'short' }}</p>
+            <p><strong>Type:</strong> {{ pollution.type_pollution }}</p>
+            <p class="description">{{ pollution.description }}</p>
+            <button (click)="removeFavorite(pollution.id, $event)" class="btn-remove">
+                ★ Retirer des favoris
+            </button>
+            <button (click)="goToDetail(pollution.id)" class="btn-detail">Détails</button>
+        </div>
+    </div>
+
+    <ng-template #noFavorites>
+        <p class="no-data" *ngIf="!loading">Aucun favori pour le moment.</p>
+    </ng-template>
+</div>

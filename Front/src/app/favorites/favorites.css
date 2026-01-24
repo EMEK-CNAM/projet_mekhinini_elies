@@ -1,0 +1,163 @@
+.favorites-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.header h2 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 28px;
+}
+
+.btn-primary {
+    padding: 12px 24px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(76, 175, 80, 0.3);
+}
+
+.btn-primary:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.4);
+}
+
+.loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+    font-size: 18px;
+}
+
+.error {
+    text-align: center;
+    padding: 60px 20px;
+    color: #f44336;
+    font-size: 18px;
+}
+
+.pollution-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px;
+}
+
+.pollution-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border-left: 4px solid #ff9800;
+}
+
+.pollution-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
+}
+
+.pollution-card h3 {
+    margin: 0 0 15px 0;
+    color: #2c3e50;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.pollution-card p {
+    margin: 8px 0;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.pollution-card p strong {
+    color: #333;
+    font-weight: 600;
+}
+
+.description {
+    margin: 15px 0;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    color: #666;
+    font-size: 13px;
+    line-height: 1.6;
+    max-height: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pollution-card button {
+    margin-top: 15px;
+    margin-right: 10px;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-remove {
+    background: #ff9800;
+    color: white;
+}
+
+.btn-remove:hover {
+    background: #f57c00;
+    transform: translateY(-1px);
+}
+
+.btn-detail {
+    background: #2196F3;
+    color: white;
+}
+
+.btn-detail:hover {
+    background: #0b7dda;
+    transform: translateY(-1px);
+}
+
+.no-data {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+    font-size: 18px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+@media (max-width: 768px) {
+    .pollution-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+}

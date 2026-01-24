@@ -1,0 +1,28 @@
+<form novalidate (ngSubmit)="onSubmit()" #loginForm="ngForm" aria-labelledby="loginTitle">
+    <h2 id="loginTitle">Connexion</h2>
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required ngModel #email="ngModel" placeholder="you@example.com" />
+        <div class="error-messages" *ngIf="email.invalid && email.touched">
+            <small *ngIf="email.errors?.['required']">Email is required.</small>
+            <small *ngIf="email.errors?.['email']">Enter a valid email address.</small>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required minlength="6" ngModel #password="ngModel" />
+        <div class="error-messages" *ngIf="password.invalid && password.touched">
+            <small *ngIf="password.errors?.['required']">Password is required.</small>
+            <small *ngIf="password.errors?.['minlength']">Password must be at least 6 characters.</small>
+        </div>
+    </div>
+
+    <button type="submit" [disabled]="loginForm.invalid">Se connecter</button>
+
+    <div style="margin-top: 16px; text-align: center;">
+        <p>Pas encore de compte ?</p>
+        <button type="button" (click)="onRegister()">S'inscrire</button>
+    </div>
+</form>
