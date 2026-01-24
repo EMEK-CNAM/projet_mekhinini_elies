@@ -1,6 +1,5 @@
 const { v4: uuidv4 } = require("uuid");
 
-
 const db = require("../models");
 const e = require("express");
 const Utilisateurs = db.utilisateurs;
@@ -8,81 +7,90 @@ const Op = db.Sequelize.Op;
 
 exports.findAll = (req, res) => {
   Utilisateurs.findAll()
-    .then(data => {
+    .then((data) => {
       res.send(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving utilisateurs."
+          err.message || "Some error occurred while retrieving utilisateurs.",
       });
     });
 };
 
-// Find a single Utilisateur with an login
+// Find a single Utilisateur with an email
 exports.login = (req, res) => {
   const utilisateur = {
-    login: req.body.login,
-    password: req.body.password
+    email: req.body.email,
+    password: req.body.password,
   };
 
-  // Test
-  let pattern = /^[A-Za-z0-9]{1,20}$/;
-  if (pattern.test(utilisateur.login) && pattern.test(utilisateur.password)) {
-    Utilisateurs.findOne({ where: { login: utilisateur.login } })
-      .then(data => {
-        if (data) {
-          const user = {
-            id: data.id,
-            name: data.nom,
-            email: data.email
-          };
-
-          res.send(data);
-        } else {
-          res.status(404).send({
-            message: `Cannot find Utilisateur with login=${utilisateur.login}.`
-          });
-        }
-      })
-      .catch(err => {
-        res.status(400).send({
-          message: "Error retrieving Utilisateur with login=" + utilisateur.login
-        });
-      });
-  } else {
-    res.status(400).send({
-      message: "Login ou password incorrect"
+  // Validate request
+  if (!utilisateur.email || !utilisateur.password) {
+    return res.status(400).send({
+      message: "Email et password requis",
     });
   }
+
+  Utilisateurs.findOne({ where: { email: utilisateur.email } })
+    .then((data) => {
+      if (data) {
+        // Vérification simple du mot de passe (à améliorer avec bcrypt en production)
+        if (data.password === utilisateur.password) {
+          const user = {
+            id: data.id,
+            nom: data.nom,
+            prenom: data.prenom,
+            email: data.email,
+          };
+          res.send(user);
+        } else {
+          res.status(401).send({
+            message: "Mot de passe incorrect",
+          });
+        }
+      } else {
+        res.status(404).send({
+          message: `Utilisateur introuvable avec l'email ${utilisateur.email}`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Erreur lors de la connexion: " + err.message,
+      });
+    });
 };
 
 // Create and Save a new Utilisateur
 exports.register = (req, res) => {
   // Validate request
-  if (!req.body.login || !req.body.password) {
+  if (!req.body.email || !req.body.password) {
     res.status(400).send({
-      message: "Content can not be empty!"
+      message: "Email et password requis",
     });
     return;
   }
   const utilisateur = {
-    id: uuidv4(),
-    login: req.body.login,
     password: req.body.password,
     nom: req.body.nom,
     prenom: req.body.prenom,
-    email: req.body.email
+    email: req.body.email,
   };
   // Save Utilisateur in the database
   Utilisateurs.create(utilisateur)
-    .then(data => {
-      res.send(data);
+    .then((data) => {
+      const response = {
+        id: data.id,
+        nom: data.nom,
+        prenom: data.prenom,
+        email: data.email,
+      };
+      res.send(response);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message:
-          err.message || "Some error occurred while creating the Utilisateur."
+        message: err.message || "Erreur lors de la création de l'utilisateur",
       });
     });
 };
@@ -91,17 +99,17 @@ exports.register = (req, res) => {
 exports.getProfile = (req, res) => {
   const id = req.params.id;
   Utilisateurs.findByPk(id)
-    .then(data => {
+    .then((data) => {
       if (!data) {
         return res.status(404).send({
-          message: "Utilisateur not found"
+          message: "Utilisateur not found",
         });
       }
       res.send(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(400).send({
-        message: err.message
+        message: err.message,
       });
     });
 };
@@ -110,22 +118,22 @@ exports.getProfile = (req, res) => {
 exports.delete = (req, res) => {
   const id = req.params.id;
   Utilisateurs.destroy({
-    where: { id: id }
+    where: { id: id },
   })
-    .then(num => {
+    .then((num) => {
       if (num == 1) {
         res.send({
-          message: "Utilisateur was deleted successfully!"
+          message: "Utilisateur was deleted successfully!",
         });
       } else {
         res.send({
-          message: `Cannot delete Utilisateur with id=${id}. Maybe Utilisateur was not found!`
+          message: `Cannot delete Utilisateur with id=${id}. Maybe Utilisateur was not found!`,
         });
       }
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(500).send({
-        message: "Could not delete Utilisateur with id=" + id
+        message: "Could not delete Utilisateur with id=" + id,
       });
     });
 };
