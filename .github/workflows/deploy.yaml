@@ -28,7 +28,7 @@ jobs:
           lftp -u "${{ secrets.PTERODACTYL_USER }},${{ secrets.PTERODACTYL_PASSWORD }}" \
           sftp://devilmans.debirumans.fr:2022 <<EOF
           set sftp:auto-confirm yes
-          mirror -R ./API/api ./ 
+          mirror -R ./API/api/ ./ 
           quit
           EOF
 
